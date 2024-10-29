@@ -4,6 +4,7 @@ namespace _123Vendas.Domain
 {
     public class Venda
     {
+        public int Id { get; set; }
         public Guid UID { get; set; }
         public int NumeroVenda { get; set; }
         public DateTime DataVenda { get; set; } = DateTime.Now;

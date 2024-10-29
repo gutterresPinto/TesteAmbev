@@ -7,4 +7,10 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\123Vendas.Application.DTO\123Vendas.Application.DTO.csproj" />
+    <ProjectReference Include="..\123Vendas.Infra.Data\123Vendas.Infra.Data.csproj" />
+    <ProjectReference Include="..\123Vendas.Vendas.Domain\123Vendas.Domain.csproj" />
+  </ItemGroup>
+
 </Project>

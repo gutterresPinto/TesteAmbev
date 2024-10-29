@@ -8,6 +8,7 @@ namespace _123Vendas.Domain
 {
     public class Filial
     {
+        public int Id { get; set; }
         public Guid UID { get; set; }
         public string? Nome { get; set; }
     }

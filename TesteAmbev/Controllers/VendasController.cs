@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using _123Vendas.Application;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace TesteAmbev.Controllers
@@ -7,5 +8,6 @@ namespace TesteAmbev.Controllers
     [ApiController]
     public class VendasController : ControllerBase
     {
+        //public VendasApplication app;
     }
 }

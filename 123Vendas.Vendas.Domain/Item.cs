@@ -8,6 +8,7 @@ namespace _123Vendas.Domain
 {
     public class Item
     {
+        public int Id { get; set; }
         public Guid UID { get; set; }
         public Guid UIDProduto { get; set; }
         public Produto Produto { get; set; } = new Produto();

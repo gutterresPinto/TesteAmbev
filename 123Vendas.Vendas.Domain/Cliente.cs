@@ -8,6 +8,7 @@ namespace _123Vendas.Domain
 {
     public class Cliente
     {
+        public int Id { get; set; }
         public Guid UID { get; set; }
         public int NumeroCliente { get; set; }
         public string? Documento { get; set; }
