@@ -1,6 +1,9 @@
 using Microsoft.EntityFrameworkCore;
-using __123Vendas.Infra.Data.Respositories;
 using _123Vendas.Infra.Data;
+using Microsoft.Extensions.DependencyInjection.Extensions;
+using _123Vendas.Application;
+using __123Vendas.Infra.Data.Respositories._123Vendas;
+using _123Vendas.Infra.Data.Respositories._123Vendas;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -12,6 +15,18 @@ builder.Services.AddControllers();
 
 builder.Services.AddDbContext<AppVendasContext>(opt => 
     opt.UseInMemoryDatabase("TodoList"));
+
+builder.Services.AddScoped<VendasApplication>();
+builder.Services.AddScoped<ClientesApplication>();
+builder.Services.AddScoped<FilialApplication>();
+builder.Services.AddScoped<ProdutoApplication>();
+builder.Services.AddScoped<VendasRepository>();
+builder.Services.AddScoped<ItemRepository>();
+builder.Services.AddScoped<ProdutoRepository>();
+builder.Services.AddScoped<ClientesRepository>();
+builder.Services.AddScoped<FilialRepository>();
+
+
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

@@ -24,7 +24,7 @@ namespace _123Vendas.Application.DTO.Vendas
             ItemResponse retorno = new ItemResponse()
             {
                 Produto = parametro.UIDProduto.ToString(),
-                DescricaoProduto = parametro.Produto.Nome,
+                DescricaoProduto = parametro.Produto != null ? parametro.Produto.Nome : "",
                 Quantidade = parametro.Quantidade,
                 Desconto = parametro.Desconto,
                 ValorItem = parametro.ValorItem

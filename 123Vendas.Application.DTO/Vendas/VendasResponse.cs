@@ -5,6 +5,7 @@ namespace _123Vendas.Application.DTO.Vendas
 {
     public class VendasResponse
     {
+        public required string VendaId { get; set; }
         public int NumeroVenda { get; set; }
         public DateTime DataVenda { get; set; } = DateTime.Now;        
         public required ClienteResponse Cliente { get; set; }
@@ -21,6 +22,7 @@ namespace _123Vendas.Application.DTO.Vendas
 
             VendasResponse retorno = new VendasResponse()
             {
+                VendaId = parametro.UID.ToString(),
                 NumeroVenda = parametro.NumeroVenda,
                 DataVenda = parametro.DataVenda,
                 Cliente = parametro.Cliente,

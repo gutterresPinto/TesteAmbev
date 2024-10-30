@@ -1,4 +1,5 @@
 ﻿using _123Vendas.Domain;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,6 +15,11 @@ public  class FilialRepository
     public FilialRepository(AppVendasContext context)
     {
         _dbContext = context;
+    }
+
+    public async Task<IEnumerable<Filial>> GetFilial()
+    {
+        return await _dbContext.Filial.ToListAsync();
     }
 
     public async Task<Filial> CreateFilial(Filial filial)

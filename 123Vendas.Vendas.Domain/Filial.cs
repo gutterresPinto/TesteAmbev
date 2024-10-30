@@ -1,15 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
-namespace _123Vendas.Domain
+namespace _123Vendas.Domain;
+
+[Table("Filial")]
+public class Filial
 {
-    public class Filial
-    {
-        public int Id { get; set; }
-        public Guid UID { get; set; }
-        public required string Nome { get; set; }
-    }
+    [Key] public Guid UID { get; set; }
+    [Required] public required string Nome { get; set; }
 }

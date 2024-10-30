@@ -1,20 +1,37 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
-namespace _123Vendas.Domain
+namespace _123Vendas.Domain;
+
+[Table("Item")]
+public class Item
 {
-    public class Item
+    [Key] public Guid UID { get; set; }
+    [Required] public Guid UIDVenda { get; set; }
+    [Required] public Guid UIDProduto { get; set; }        
+    [Required] public int Quantidade { get; set; }
+    [Required] public decimal Desconto { get; set; }
+    [Required] public decimal ValorItem { get; set; }
+
+    public Produto? Produto { get; set; }
+    public Venda? Venda { get; set; }
+
+    public class Configuration : IEntityTypeConfiguration<Item>
     {
-        public int Id { get; set; }
-        public Guid UID { get; set; }
-        public Guid UIDVenda { get; set; }
-        public Guid UIDProduto { get; set; }
-        public Produto? Produto { get; set; }
-        public int Quantidade { get; set; }
-        public decimal Desconto { get; set; }
-        public decimal ValorItem { get; set; }
+        public void Configure(EntityTypeBuilder<Item> builder)
+        {
+
+            builder.HasOne(x => x.Venda)
+                .WithMany()
+                .HasForeignKey(x => x.UIDVenda)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            builder.HasOne(x => x.Produto)
+                .WithMany()
+                .HasForeignKey(x => x.UIDProduto)
+                .OnDelete(DeleteBehavior.NoAction);
+        }
     }
 }

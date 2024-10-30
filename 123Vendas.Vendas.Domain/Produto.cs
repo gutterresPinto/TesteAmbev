@@ -1,17 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel.DataAnnotations;
 
-namespace _123Vendas.Domain
+
+namespace _123Vendas.Domain;
+
+[Table("Produto")]
+public class Produto
 {
-    public class Produto
-    {
-        public int Id { get; set; }
-        public Guid UID { get; set; }
-        public int CodigoProduto { get; set; }
-        public required string Nome { get; set; }
-        public decimal Valor { get; set; }
-    }
+    [Key] public Guid UID { get; set; }
+    [Required] public int CodigoProduto { get; set; }
+    [Required] public required string Nome { get; set; }
+    [Required] public decimal Valor { get; set; }        
 }

@@ -1,17 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
-namespace _123Vendas.Domain
+namespace _123Vendas.Domain;
+
+[Table("Cliente")]
+public class Cliente
 {
-    public class Cliente
-    {
-        public int Id { get; set; }
-        public Guid UID { get; set; }
-        public int NumeroCliente { get; set; }
-        public required string Documento { get; set; } = "";
-        public required string Nome { get; set; } = "";
-    }
+    [Key] public Guid UID { get; set; }
+    [Required] public int NumeroCliente { get; set; }
+    [Required] public required string Documento { get; set; } = "";
+    [Required] public required string Nome { get; set; } = "";
 }
