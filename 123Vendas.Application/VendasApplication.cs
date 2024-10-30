@@ -4,6 +4,7 @@ using _123Vendas.Domain;
 using _123Vendas.Infra.Data;
 using _123Vendas.Infra.Data.Respositories._123Vendas;
 using Microsoft.EntityFrameworkCore;
+using Serilog;
 
 namespace _123Vendas.Application;
 
@@ -36,6 +37,11 @@ public class VendasApplication
     
     public async Task<VendasResponse> InsertVenda(VendasResquest venda)
     {
+        Log.Information("Inserindo Venda");
+
+        Log.Debug("Dados", venda);
+
+
         Venda vendainsert = new Venda() 
         { 
             DataVenda = DateTime.Now,

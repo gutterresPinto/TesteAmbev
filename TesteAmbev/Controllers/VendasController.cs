@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Serilog;
 
 namespace TesteAmbev.Controllers;
 
@@ -25,6 +26,8 @@ public class VendasController : ControllerBase
     [HttpGet]
     public async Task<ActionResult<IEnumerable<VendasResponse>>> GetVenda()
     {
+        Log.Information("Buscando Lista de Vendas");
+
         var vendas = await _applicationVendas.GetVenda();
 
         return !vendas.Any() ? NoContent() : Ok(vendas);
@@ -46,6 +49,8 @@ public class VendasController : ControllerBase
     [HttpPost]
     public async Task<ActionResult<VendasResponse>> PostVenda(VendasResquest venda)
     {
+        Log.Information("Inserindo Venda");
+
         var vendaCriada = await _applicationVendas.InsertVenda(venda);
 
         return CreatedAtAction("GetVenda", new { id = vendaCriada.VendaId }, vendaCriada);

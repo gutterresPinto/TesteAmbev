@@ -8,6 +8,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Serilog.AspNetCore" Version="8.0.3" />
+    <PackageReference Include="Serilog.Sinks.Console" Version="6.0.0" />
+    <PackageReference Include="Serilog.Sinks.File" Version="6.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\123Vendas.Application.DTO\123Vendas.Application.DTO.csproj" />
     <ProjectReference Include="..\123Vendas.Infra.Data\123Vendas.Infra.Data.csproj" />
     <ProjectReference Include="..\123Vendas.Vendas.Domain\123Vendas.Domain.csproj" />

@@ -4,6 +4,8 @@ using Microsoft.Extensions.DependencyInjection.Extensions;
 using _123Vendas.Application;
 using __123Vendas.Infra.Data.Respositories._123Vendas;
 using _123Vendas.Infra.Data.Respositories._123Vendas;
+using Serilog;
+using Serilog.Events;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -26,7 +28,8 @@ builder.Services.AddScoped<ProdutoRepository>();
 builder.Services.AddScoped<ClientesRepository>();
 builder.Services.AddScoped<FilialRepository>();
 
-
+builder.Host.UseSerilog((ctx, lc) => lc
+    .WriteTo.Console(LogEventLevel.Information));
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
