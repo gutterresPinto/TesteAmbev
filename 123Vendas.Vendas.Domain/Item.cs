@@ -10,8 +10,9 @@ namespace _123Vendas.Domain
     {
         public int Id { get; set; }
         public Guid UID { get; set; }
+        public Guid UIDVenda { get; set; }
         public Guid UIDProduto { get; set; }
-        public Produto Produto { get; set; } = new Produto();
+        public Produto? Produto { get; set; }
         public int Quantidade { get; set; }
         public decimal Desconto { get; set; }
         public decimal ValorItem { get; set; }

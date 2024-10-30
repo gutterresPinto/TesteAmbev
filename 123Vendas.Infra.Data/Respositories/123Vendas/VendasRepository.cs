@@ -13,6 +13,11 @@ namespace __123Vendas.Infra.Data.Respositories._123Vendas
             _dbContext = context;
         }
 
+        private async Task<bool> VendaExists(int numeroVenda)
+        {
+            return await _dbContext.Venda.AnyAsync(e => e.NumeroVenda == numeroVenda);
+        }
+
         public async Task<IEnumerable<Venda>> GetVenda()
         {
             return await _dbContext.Venda.ToListAsync();
@@ -31,6 +36,29 @@ namespace __123Vendas.Infra.Data.Respositories._123Vendas
             
             _dbContext.Venda.Add(venda);
             await _dbContext.SaveChangesAsync();
+
+            return venda;
+        }
+
+        public async Task<Venda> UpdateVenda(Venda venda)
+        {
+            _dbContext.Entry(venda).State = EntityState.Modified;
+
+            try
+            {
+                await _dbContext.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!await VendaExists(venda.NumeroVenda))
+                {
+                    throw new InvalidOperationException("Venda Inexistente");
+                }
+                else
+                {
+                    throw;
+                }
+            }
 
             return venda;
         }

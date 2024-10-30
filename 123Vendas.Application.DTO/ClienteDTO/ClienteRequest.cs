@@ -4,12 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace _123Vendas.Domain
+namespace _123Vendas.Application.DTO.ClienteDTO
 {
-    public class Filial
+    public  class ClienteRequest
     {
-        public int Id { get; set; }
-        public Guid UID { get; set; }
+        public int NumeroCliente { get; set; }
+        public required string Documento { get; set; }
         public required string Nome { get; set; }
     }
 }

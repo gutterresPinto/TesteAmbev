@@ -11,7 +11,7 @@ namespace _123Vendas.Domain
         public int Id { get; set; }
         public Guid UID { get; set; }
         public int CodigoProduto { get; set; }
-        public string? Nome { get; set; }
+        public required string Nome { get; set; }
         public decimal Valor { get; set; }
     }
 }
