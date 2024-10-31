@@ -9,6 +9,8 @@ namespace _123Vendas.Application.DTO.Vendas;
 
 public class VendasResquest
 {
+    public string? VendaId{ get; set; }
+    public int NumeroVenda { get; set; }
     public DateTime DataVenda { get; set; } = DateTime.Now;
     public required string Cliente { get; set; }        
     public decimal ValorTotal { get; set; }

@@ -17,10 +17,10 @@ public class Venda
     [Required] public Guid UIDFilial { get; set; }    
     [Required] public int Status { get; set; }
 
-    public List<Item> Itens { get; set; } = new List<Item>();
+    public virtual ICollection<Item> Itens { get; set; } = [];
 
-    public Cliente? Cliente { get; set; }
-    public Filial? Filial { get; set; }
+    public virtual Cliente? Cliente { get; set; }
+    public virtual Filial? Filial { get; set; }
 
     public class Configuration : IEntityTypeConfiguration<Venda>
     {

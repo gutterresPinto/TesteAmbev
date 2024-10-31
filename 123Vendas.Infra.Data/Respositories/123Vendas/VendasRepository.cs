@@ -1,6 +1,7 @@
 ﻿using _123Vendas.Domain;
 using _123Vendas.Infra.Data;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage;
 
 namespace __123Vendas.Infra.Data.Respositories._123Vendas
 {
@@ -13,21 +14,42 @@ namespace __123Vendas.Infra.Data.Respositories._123Vendas
             _dbContext = context;
         }
 
-        private async Task<bool> VendaExists(int numeroVenda)
+        private async Task<bool> VendaExists(string id)
         {
-            return await _dbContext.Venda.AnyAsync(e => e.NumeroVenda == numeroVenda);
+            return await _dbContext.Venda.AnyAsync(e => e.UID.ToString() == id);
         }
 
         public async Task<IEnumerable<Venda>> GetVenda()
         {
-            return await _dbContext.Venda.ToListAsync();
+            var query = (_dbContext.Venda).AsNoTracking();
+
+            query = query.Include(v => v.Itens).ThenInclude(i => i.Produto);            
+            query = query.Include(v => v.Cliente);
+            query = query.Include(v => v.Filial);
+
+            return await query.ToListAsync();
         }
 
         public async Task<Venda> GetVenda(int numeroVenda)
         {
-            var venda = await _dbContext.Venda.FindAsync(numeroVenda);
+            var query = (_dbContext.Venda).AsNoTracking();
 
-            return venda;
+            query = query.Include(v => v.Itens).ThenInclude(i => i.Produto);
+            query = query.Include(v => v.Cliente);
+            query = query.Include(v => v.Filial);
+
+            return await query.Where(v => v.NumeroVenda == numeroVenda).FirstAsync();            
+        }
+
+        public async Task<Venda> GetVenda(string id)
+        {
+            var query = (_dbContext.Venda).AsNoTracking();
+
+            query = query.Include(v => v.Itens).ThenInclude(i => i.Produto);
+            query = query.Include(v => v.Cliente);
+            query = query.Include(v => v.Filial);
+
+            return await query.Where(v => v.UID.ToString() == id).FirstAsync();
         }
 
         public async Task<Venda> CreateVenda(Venda venda)
@@ -50,7 +72,7 @@ namespace __123Vendas.Infra.Data.Respositories._123Vendas
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!await VendaExists(venda.NumeroVenda))
+                if (!await VendaExists(venda.UID.ToString()))
                 {
                     throw new InvalidOperationException("Venda Inexistente");
                 }
@@ -63,9 +85,9 @@ namespace __123Vendas.Infra.Data.Respositories._123Vendas
             return venda;
         }
 
-        public async Task DeleteVenda(int numeroVenda)
+        public async Task DeleteVenda(string id)
         {
-            var venda = await _dbContext.Venda.FindAsync(numeroVenda);
+            var venda = await _dbContext.Venda.FirstOrDefaultAsync(v => v.UID.ToString() == id);
 
             if (venda != null)
             {

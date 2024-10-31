@@ -34,7 +34,14 @@ public class VendasApplication
 
         return venda;
     }
-    
+
+    public async Task<VendasResponse> GetVenda(string id)
+    {
+        var venda = await _vendasRepository.GetVenda(id);
+
+        return venda;
+    }
+
     public async Task<VendasResponse> InsertVenda(VendasResquest venda)
     {
         Log.Information("Inserindo Venda");
@@ -42,8 +49,13 @@ public class VendasApplication
         Log.Debug("Dados", venda);
 
 
+        Log.Information($"Data da  Venda {DateTime.Now}");
+        Log.Information($"Cliente {venda.Cliente}");
+        Log.Information($"Filial {venda.Filial}");
+
         Venda vendainsert = new Venda() 
         { 
+            NumeroVenda = (int)DateTime.Now.Ticks,
             DataVenda = DateTime.Now,
             Status = 1,
             UIDCliente = new Guid(venda.Cliente),
@@ -51,39 +63,129 @@ public class VendasApplication
             ValorTotal = venda.Itens.Sum(i => i.ValorItem)                     
         };
 
-        await _vendasRepository.CreateVenda(vendainsert);
-
-        foreach (ItemRequest item in venda.Itens)
+        try
         {
-            Item intemInser = new Item() 
-            { 
-                UIDVenda = vendainsert.UID,
-                UIDProduto = new Guid(item.Produto),
-                Quantidade = item.Quantidade,
-                Desconto = item.Desconto,
-                ValorItem = item.ValorItem                    
-            };
-
-            await _itemRepository.CreateItem(intemInser);
-
-            vendainsert.Itens.Add(intemInser);
+            await _vendasRepository.CreateVenda(vendainsert);
         }
+        catch (Exception ex)
+        {
+            Log.Error($"Erro ao gravar venda. {ex.Message}");
+            throw;
+        }
+
+
+        try
+        {
+            foreach (ItemRequest item in venda.Itens)
+            {
+                Item intemInser = new Item()
+                {
+                    UIDVenda = vendainsert.UID,
+                    UIDProduto = new Guid(item.Produto),
+                    Quantidade = item.Quantidade,
+                    Desconto = item.Desconto,
+                    ValorItem = item.ValorItem
+                };
+
+                await _itemRepository.CreateItem(intemInser);
+
+                vendainsert.Itens.Add(intemInser);
+            }
+        }
+        catch (Exception ex)
+        {
+            Log.Error($"Erro ao gravar item de venda. {ex.Message}");
+            throw;
+        }        
 
         return vendainsert;
     }
 
-    public async Task<VendasResponse> UpdateVenda(int numeroVenda, Venda venda)
+    public async Task<VendasResponse> UpdateVenda(string id, VendasResquest venda)
     {
-        if (numeroVenda != venda.NumeroVenda)
+        if (id != venda.VendaId)
         {
+            Log.Error($"Dados inconsistentes");
             throw new ArgumentException("Dados inconsistentes");
         }
 
-        return await _vendasRepository.UpdateVenda(venda);
+        Log.Information("Atualizandi Venda");
+
+        Log.Debug("Dados", venda);
+
+        Log.Information($"Data da  Venda {venda.DataVenda}");
+        Log.Information($"Cliente {venda.Cliente}");
+        Log.Information($"Filial {venda.Filial}");
+
+        Venda vendaAtualizar = new Venda()
+        {
+            UID = new Guid(venda.VendaId),
+            NumeroVenda = venda.NumeroVenda,
+            DataVenda = venda.DataVenda,
+            UIDCliente = new Guid(venda.Cliente),
+            UIDFilial = new Guid(venda.Filial),
+            Status = venda.Status,
+            ValorTotal = venda.Itens.Sum(i => i.ValorItem)
+        };
+
+        Venda vendaOriginal = await _vendasRepository.GetVenda(venda.VendaId);
+
+        try
+        {
+            foreach (ItemRequest item in venda.Itens)
+            {
+                Item intemInser = new Item()
+                {
+                    UIDVenda = vendaAtualizar.UID,
+                    UIDProduto = new Guid(item.Produto),
+                    Quantidade = item.Quantidade,
+                    Desconto = item.Desconto,
+                    ValorItem = item.ValorItem
+                };
+
+                if (string.IsNullOrEmpty(item.ItemId))
+                {
+                    await _itemRepository.CreateItem(intemInser);
+                }
+                else
+                {
+                    intemInser.UID = new Guid(item.ItemId);
+
+                    await _itemRepository.UpdateItem(intemInser);
+                }
+
+                vendaAtualizar.Itens.Add(intemInser);
+            }
+
+            foreach (Item iteOriginal in vendaOriginal.Itens)
+            {
+                if (venda.Itens.Any(i => i.ItemId == iteOriginal.UID.ToString()))
+                {
+                    await _itemRepository.DeleteItem(iteOriginal.UID.ToString());
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            Log.Error($"Erro ao gravar item de venda. {ex.Message}");
+            throw;
+        }
+
+
+        try
+        {
+            return await _vendasRepository.UpdateVenda(vendaAtualizar);
+        }
+        catch (Exception ex)
+        {
+            Log.Error($"Erro ao gravar  venda. {ex.Message}");
+            throw;
+        }
+        
     }
 
-    public async Task DeleteVenda(int numerovenda)
+    public async Task DeleteVenda(string id)
     {
-        await _vendasRepository.DeleteVenda(numerovenda);
+        await _vendasRepository.DeleteVenda(id);
     }
 }

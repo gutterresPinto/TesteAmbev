@@ -11,14 +11,23 @@ public class AppVendasContext :DbContext
         :base(options) 
     { }
 
-    public DbSet<Venda> Venda { get; set; } = null!;
-    public DbSet<Cliente> Cliente { get; set; } = null!;
-    public DbSet<Filial> Filial { get; set; } = null!;
-    public DbSet<Item> Item { get; set; } = null!;
-    public DbSet<Produto> Produto { get; set; } = null!;
+    public virtual DbSet<Venda> Venda { get; set; } 
+    public virtual DbSet<Cliente> Cliente { get; set; }
+    public virtual DbSet<Filial> Filial { get; set; }
+    public virtual DbSet<Item> Item { get; set; } 
+    public virtual DbSet<Produto> Produto { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        modelBuilder.ApplyConfiguration(new Venda.Configuration());
+        modelBuilder.ApplyConfiguration(new Cliente.Configuration());
+        modelBuilder.ApplyConfiguration(new Filial.Configuration());
+        modelBuilder.ApplyConfiguration(new Item.Configuration());
+        modelBuilder.ApplyConfiguration(new Produto.Configuration());
+
+
+
+
         modelBuilder.Entity<Produto>()
             .Property(b => b.CodigoProduto)
             .ValueGeneratedOnAdd();
