@@ -7,6 +7,9 @@ namespace _123Vendas.Infra.Data;
 
 public class AppVendasContext :DbContext
 {
+    public AppVendasContext()        
+    { }
+
     public AppVendasContext(DbContextOptions<AppVendasContext> options)
         :base(options) 
     { }

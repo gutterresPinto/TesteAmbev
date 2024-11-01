@@ -6,6 +6,7 @@ using __123Vendas.Infra.Data.Respositories._123Vendas;
 using _123Vendas.Infra.Data.Respositories._123Vendas;
 using Serilog;
 using Serilog.Events;
+using _123Vendas.Infra.Data.Interfaces;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -22,8 +23,8 @@ builder.Services.AddScoped<VendasApplication>();
 builder.Services.AddScoped<ClientesApplication>();
 builder.Services.AddScoped<FilialApplication>();
 builder.Services.AddScoped<ProdutoApplication>();
-builder.Services.AddScoped<VendasRepository>();
-builder.Services.AddScoped<ItemRepository>();
+builder.Services.AddScoped<IVendasRepository, VendasRepository>();
+builder.Services.AddScoped<IItemRepository ,ItemRepository>();
 builder.Services.AddScoped<ProdutoRepository>();
 builder.Services.AddScoped<ClientesRepository>();
 builder.Services.AddScoped<FilialRepository>();

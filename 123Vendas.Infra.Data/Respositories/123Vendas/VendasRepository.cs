@@ -1,11 +1,12 @@
 ﻿using _123Vendas.Domain;
 using _123Vendas.Infra.Data;
+using _123Vendas.Infra.Data.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
 
 namespace __123Vendas.Infra.Data.Respositories._123Vendas
 {
-    public class VendasRepository
+    public class VendasRepository : IVendasRepository
     {
         private AppVendasContext _dbContext;
 
@@ -19,7 +20,7 @@ namespace __123Vendas.Infra.Data.Respositories._123Vendas
             return await _dbContext.Venda.AnyAsync(e => e.UID.ToString() == id);
         }
 
-        public async Task<IEnumerable<Venda>> GetVenda()
+        public async Task<IEnumerable<Venda>> GetVendas()
         {
             var query = (_dbContext.Venda).AsNoTracking();
 
@@ -30,7 +31,7 @@ namespace __123Vendas.Infra.Data.Respositories._123Vendas
             return await query.ToListAsync();
         }
 
-        public async Task<Venda> GetVenda(int numeroVenda)
+        public async Task<Venda> GetVendaPorNumero(int numeroVenda)
         {
             var query = (_dbContext.Venda).AsNoTracking();
 
@@ -41,7 +42,7 @@ namespace __123Vendas.Infra.Data.Respositories._123Vendas
             return await query.Where(v => v.NumeroVenda == numeroVenda).FirstAsync();            
         }
 
-        public async Task<Venda> GetVenda(string id)
+        public async Task<Venda> GetVendaPorId(string id)
         {
             var query = (_dbContext.Venda).AsNoTracking();
 

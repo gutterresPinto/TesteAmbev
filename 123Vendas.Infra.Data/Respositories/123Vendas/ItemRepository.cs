@@ -1,10 +1,11 @@
 ﻿using _123Vendas.Domain;
 using _123Vendas.Infra.Data;
+using _123Vendas.Infra.Data.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
 namespace _123Vendas.Infra.Data.Respositories._123Vendas;
 
-public class ItemRepository
+public class ItemRepository : IItemRepository
 {
     private AppVendasContext _dbContext;
 

@@ -2,6 +2,7 @@
 using _123Vendas.Application.DTO.Vendas;
 using _123Vendas.Domain;
 using _123Vendas.Infra.Data;
+using _123Vendas.Infra.Data.Interfaces;
 using _123Vendas.Infra.Data.Respositories._123Vendas;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
@@ -11,10 +12,10 @@ namespace _123Vendas.Application;
 public class VendasApplication
 {
     private readonly AppVendasContext _context;
-    private VendasRepository _vendasRepository;
-    private ItemRepository _itemRepository;
+    private IVendasRepository _vendasRepository;
+    private IItemRepository _itemRepository;
 
-    public VendasApplication(AppVendasContext context, VendasRepository vendasRepository, ItemRepository itemRepository)
+    public VendasApplication(AppVendasContext context, IVendasRepository vendasRepository, IItemRepository itemRepository)
     {
         _context = context;
         _vendasRepository = vendasRepository;
@@ -23,21 +24,21 @@ public class VendasApplication
 
     public async Task<IEnumerable<VendasResponse>> GetVenda()
     {
-        IEnumerable<Venda> listaVendas = await _vendasRepository.GetVenda();
+        IEnumerable<Venda> listaVendas = await _vendasRepository.GetVendas();
 
         return listaVendas.Select(x => (VendasResponse)x);
     }
 
     public async Task<VendasResponse> GetVenda(int numeroVenda)
     {
-        var venda = await _vendasRepository.GetVenda(numeroVenda);
+        var venda = await _vendasRepository.GetVendaPorNumero(numeroVenda);
 
         return venda;
     }
 
     public async Task<VendasResponse> GetVenda(string id)
     {
-        var venda = await _vendasRepository.GetVenda(id);
+        var venda = await _vendasRepository.GetVendaPorId(id);
 
         return venda;
     }
@@ -128,7 +129,7 @@ public class VendasApplication
             ValorTotal = venda.Itens.Sum(i => i.ValorItem)
         };
 
-        Venda vendaOriginal = await _vendasRepository.GetVenda(venda.VendaId);
+        Venda vendaOriginal = await _vendasRepository.GetVendaPorId(venda.VendaId);
 
         try
         {
